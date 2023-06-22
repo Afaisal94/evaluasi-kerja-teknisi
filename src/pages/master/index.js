@@ -1,5 +1,5 @@
 // Dashboard
-import DashboardMaster from "./dashboardMaster";
+import DashboardMaster from "./dashboard";
 // Teknisi
 import ListTeknisi from "./teknisi/list";
 import AddTeknisi from "./teknisi/add";

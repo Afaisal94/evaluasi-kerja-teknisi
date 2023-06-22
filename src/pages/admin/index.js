@@ -1,5 +1,5 @@
 // dashboard
-import DashboardAdmin from "./DashboardAdmin";
+import DashboardAdmin from "./dashboard";
 // Profile
 import ViewProfile from "./profile/viewProfile";
 import EditProfile from "./profile/editProfile";
