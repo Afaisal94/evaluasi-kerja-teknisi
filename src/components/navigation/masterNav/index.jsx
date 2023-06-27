@@ -2,51 +2,59 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const MasterNav = () => {
-  const nama = localStorage.getItem("nama");
   return (
-    <div className="sb-sidenav-menu">
-      <div className="nav">
-        <div className="sb-sidenav-menu-heading"></div>
-        <center>{nama}</center>
-        <div className="sb-sidenav-menu-heading">MENU UTAMA</div>
-        <Link to={"/dashboard-master"} className="nav-link">
-          <div className="sb-nav-link-icon">
-            <i className="fas fa-table"></i>
-          </div>
-          <h6>Dashboard</h6>
-        </Link>
-        <Link to={"/list-teknisi"} className="nav-link">
-          <div className="sb-nav-link-icon">
-            <i className="fas fa-table"></i>
-          </div>
-          <h6>Data Teknisi</h6>
-        </Link>
-        <Link to={"/list-customer"} className="nav-link">
-          <div className="sb-nav-link-icon">
-            <i className="fas fa-table"></i>
-          </div>
-          <h6>Data Customer</h6>
-        </Link>
-        <Link to={"/list-kunjungan"} className="nav-link">
-          <div className="sb-nav-link-icon">
-            <i className="fas fa-table"></i>
-          </div>
-          <h6>Data Kunjungan</h6>
-        </Link>
-        <Link to={"/list-jenispekerjaan"} className="nav-link">
-          <div className="sb-nav-link-icon">
-            <i className="fas fa-table"></i>
-          </div>
-          <h6>Jenis Pekerjaan</h6>
-        </Link>
-        <Link to={"/performance"} className="nav-link">
-          <div className="sb-nav-link-icon">
-            <i className="fas fa-table"></i>
-          </div>
-          <h6>Data Performance</h6>
-        </Link>
-      </div>
-    </div>
+    <nav className="mt-2">
+      <ul
+        className="nav nav-pills nav-sidebar flex-column"
+        data-widget="treeview"
+        role="menu"
+        data-accordion="false"
+      >
+        <li className="nav-header">MAIN MENU</li>
+        <li className="nav-item">
+          <Link to={"/dashboard-master"} className="nav-link">
+            <i className="nav-icon fas fa-book"></i>
+            <p>Dashboard</p>
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link to={"/list-teknisi"} className="nav-link">
+            <i className="nav-icon fas fa-book"></i>
+            <p>Data Teknisi</p>
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link to={"/list-customer"} className="nav-link">
+            <i className="nav-icon fas fa-book"></i>
+            <p>Data Customer</p>
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link to={"/list-kunjungan"} className="nav-link">
+            <i className="nav-icon fas fa-book"></i>
+            <p>Data Kunjungan</p>
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link to={"/list-jenispekerjaan"} className="nav-link">
+            <i className="nav-icon fas fa-book"></i>
+            <p>Jenis Pekerjaan</p>
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link to={"/performance"} className="nav-link">
+            <i className="nav-icon fas fa-book"></i>
+            <p>Data Performance</p>
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link to={"/list-evaluasi"} className="nav-link">
+            <i className="nav-icon fas fa-book"></i>
+            <p>Data Evaluasi</p>
+          </Link>
+        </li>
+      </ul>
+    </nav>
   );
 };
 

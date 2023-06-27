@@ -16,6 +16,7 @@ import AdminNav from "./navigation/adminNav";
 // Table
 import PerformanceTable from "./table/performanceTable";
 import PerformanceByTeknisi from "./table/performanceByTeknisi";
+import EvaluasiTable from "./table/evaluasiTable";
 
 export {
   ProtectedMaster,
@@ -26,5 +27,6 @@ export {
   AdminNav,
   MasterNav,
   PerformanceTable,
-  PerformanceByTeknisi
+  PerformanceByTeknisi,
+  EvaluasiTable
 };

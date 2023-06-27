@@ -17,6 +17,9 @@ import {
   ListKunjungan,
   ListTeknisi,
   Performance,
+  ListEvaluasi,
+  AddEvaluasi,
+  EditEvaluasi,
 } from "../pages/master";
 import {
   AddKunjunganTeknisi,
@@ -162,6 +165,33 @@ export const Router = () => {
             element={
               <ProtectedMaster>
                 <Performance />
+              </ProtectedMaster>
+            }
+          />
+
+          <Route
+            path="/list-evaluasi"
+            element={
+              <ProtectedMaster>
+                <ListEvaluasi />
+              </ProtectedMaster>
+            }
+          />
+
+          <Route
+            path="/add-evaluasi"
+            element={
+              <ProtectedMaster>
+                <AddEvaluasi />
+              </ProtectedMaster>
+            }
+          />
+
+          <Route
+            path="/edit-evaluasi/:id"
+            element={
+              <ProtectedMaster>
+                <EditEvaluasi />
               </ProtectedMaster>
             }
           />

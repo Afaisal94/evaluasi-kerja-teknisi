@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 
 function PerformanceByTeknisi(props) {
-  const { bulan, tahun, data } = props;
+  const { bulan, tahun, data, evaluasi } = props;
 
   const getTotalPoints = () => {
     const mydata = data?.kunjungans;
@@ -23,6 +23,7 @@ function PerformanceByTeknisi(props) {
                 <th>Nama Teknisi</th>
                 <th>Total Kunjungan</th>
                 <th>Total Points</th>
+                <th>Hasil Evaluasi</th>
               </tr>
             </thead>
             <tbody>
@@ -36,12 +37,13 @@ function PerformanceByTeknisi(props) {
                     <td>{data?.nama}</td>
                     <td>{data?.kunjungans.length}</td>
                     <td>{getTotalPoints()}</td>
+                    <td>{evaluasi?.hasil}</td>
                   </tr>
                 </>
               ) : (
                 <>
                   <tr>
-                    <td colSpan={5}><center>Data tidak ditemukan</center></td>
+                    <td colSpan={6}><center>Data tidak ditemukan</center></td>
                   </tr>
                 </>
               )}

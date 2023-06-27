@@ -19,6 +19,10 @@ import AddJenisPekerjaan from "./jenisPekerjaan/add";
 import EditJenisPekerjaan from "./jenisPekerjaan/edit";
 // Performance
 import Performance from "./performance";
+//
+import ListEvaluasi from "./evaluasi/list";
+import AddEvaluasi from "./evaluasi/add";
+import EditEvaluasi from "./evaluasi/edit";
 
 export { 
     DashboardMaster,
@@ -26,5 +30,6 @@ export {
     ListCustomer, AddCustomer, EditCustomer,
     ListKunjungan, AddKunjungan, EditKunjungan, DetailKunjungan,
     ListJenisPekerjaan, AddJenisPekerjaan, EditJenisPekerjaan,
-    Performance
+    Performance,
+    ListEvaluasi, AddEvaluasi, EditEvaluasi
  };

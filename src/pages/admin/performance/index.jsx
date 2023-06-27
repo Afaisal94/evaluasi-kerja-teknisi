@@ -3,18 +3,25 @@ import { AdminLayout, PerformanceByTeknisi } from "../../../components";
 import { Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getPerformanceById } from "../../../hooks/usePerformance";
+import { getEvaluasiByTeknisiId } from "../../../hooks/useEvaluasi";
 
 function PerformanceTeknisi() {
   const id = localStorage.getItem("userId");
+  const teknisiId = id;
   const navigate = useNavigate();
   const [bulan, setBulan] = useState(0);
   const [tahun, setTahun] = useState(2023);
   const [namaBulan, setNamaBulan] = useState('');
   const [tableShow, setTableShow] = useState(false);
 
-  const { data } = useQuery({
+  const { data:performance } = useQuery({
     queryKey: ["performance", { id, bulan, tahun }],
     queryFn: async () => await getPerformanceById({ id, bulan, tahun }),
+  });
+
+  const { data:evaluasi } = useQuery({
+    queryKey: ["evaluasiByTeknisi", { teknisiId, bulan, tahun }],
+    queryFn: async () => await getEvaluasiByTeknisiId({ teknisiId, bulan, tahun }),
   });
 
   const convertMonth = (bulan) => {
@@ -82,7 +89,8 @@ function PerformanceTeknisi() {
               <PerformanceByTeknisi
                 bulan={namaBulan}
                 tahun={tahun}
-                data={data}
+                data={performance}
+                evaluasi={evaluasi}
               />
             </div>
           </div>
