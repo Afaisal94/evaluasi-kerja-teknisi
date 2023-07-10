@@ -24,7 +24,7 @@ function Home() {
               fontSize: "40px",
             }}
           >
-            Sistem Evaluasi Kerja Teknisi Mesin Fotocopy
+            Sistem Manajemen Pemeliharaan & Evaluasi Untuk Teknisi Mesin Fotocopy
           </h1>
           <h4>PT. Sarana Solusindo Prima</h4>
           <div className="mt-4">

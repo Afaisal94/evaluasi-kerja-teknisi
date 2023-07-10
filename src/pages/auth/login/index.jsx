@@ -9,6 +9,7 @@ function Login() {
   const { role } = useParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const [validation, setValidation] = useState([]);
   const [btnColor, setBtnColor] = useState("");
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ function Login() {
 
   const loginHandler = async (e) => {
     e.preventDefault();
-
+    setLoading(true)
     const formData = new URLSearchParams();
     formData.append("email", email);
     formData.append("password", password);
@@ -41,6 +42,7 @@ function Login() {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("nama", response.data.user.nama);
         localStorage.setItem("userId", response.data.user.id);
+        setLoading(false)
         if (response.data.user.role == "master") {
           localStorage.setItem("role", response.data.user.role);
           navigate("/dashboard-master");
@@ -51,6 +53,7 @@ function Login() {
       })
       .catch((error) => {
         setValidation(error.response.data);
+        setLoading(false)
       });
   };
 
@@ -90,7 +93,7 @@ function Login() {
 
             <div className="d-grid gap-2 mt-4 mb-0">
               <button type="submit" className={btnColor}>
-                Login
+                {loading ? 'Loading ..' : 'Login'}
               </button>
             </div>
           </form>
