@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { AdminLayout } from "../../../../components";
 import { useNavigate } from "react-router-dom";
-import { useQueries, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQueries } from "@tanstack/react-query";
 import { createKunjungan } from "../../../../hooks/useKunjungan";
 import { getCustomer } from "../../../../hooks/useCustomer";
 import { getJenisPekerjaan } from "../../../../hooks/useJenisPekerjaan";
@@ -9,12 +9,12 @@ import { getJenisPekerjaan } from "../../../../hooks/useJenisPekerjaan";
 function AddKunjunganTeknisi() {
   const userId = parseInt(localStorage.getItem("userId"));
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const [customerId, setCustomerId] = useState(0);
   const teknisiId = userId;
   const [jenisPekerjaanId, setJenisPekerjaanId] = useState(0);
   const [counter, setCounter] = useState("");
   const [keterangan, setKeterangan] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const [customer, jenisPekerjaan] = useQueries({
     queries: [
@@ -30,31 +30,23 @@ function AddKunjunganTeknisi() {
     ],
   });
 
-  const { mutate } = useMutation({
-    mutationFn: async () => {
-      await createKunjungan({
-        customerId,
-        teknisiId,
-        jenisPekerjaanId,
-        counter,
-        keterangan,
-      });
-    },
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["kunjungan"] });
-    },
-  });
-
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await mutate({
+    setLoading(true);
+    createKunjungan({
       customerId,
       teknisiId,
       jenisPekerjaanId,
       counter,
       keterangan,
-    });
-    navigate("/list-kunjungan-teknisi");
+    })
+      .then((res) => {
+        setLoading(false);
+        navigate("/list-kunjungan-teknisi");
+      })
+      .catch((error) => {
+        setLoading(false);
+      });
   };
   return (
     <AdminLayout>
@@ -112,7 +104,7 @@ function AddKunjunganTeknisi() {
 
             <br />
             <button type="submit" className="btn btn-primary">
-              Submit
+              {loading ? "Loading .." : "Submit"}
             </button>
           </form>
         </div>

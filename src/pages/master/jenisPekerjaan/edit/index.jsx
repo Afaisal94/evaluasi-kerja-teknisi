@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { MasterLayout } from "../../../../components";
 import { useNavigate, useParams } from "react-router-dom";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getJenisPekerjaanById, updateJenisPekerjaan } from "../../../../hooks/useJenisPekerjaan";
+import { useQuery } from "@tanstack/react-query";
+import {
+  getJenisPekerjaanById,
+  updateJenisPekerjaan,
+} from "../../../../hooks/useJenisPekerjaan";
 
 function EditJenisPekerjaan() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const [jenisPekerjaan, setJenisPekerjaan] = useState("");
   const [points, setPoints] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const { data } = useQuery({
     queryKey: ["jenisPekerjaan", id],
@@ -23,19 +26,17 @@ function EditJenisPekerjaan() {
     }
   }, [data]);
 
-  const { mutate } = useMutation({
-    mutationFn: async () => {
-      await updateJenisPekerjaan({ id, jenisPekerjaan, points });
-    },
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["jenisPekerjaan"] });
-    },
-  });
-
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await mutate({ id, jenisPekerjaan, points });
-    navigate("/list-jenispekerjaan");
+    setLoading(true);
+    updateJenisPekerjaan({ id, jenisPekerjaan, points })
+      .then((res) => {
+        setLoading(false);
+        navigate("/list-jenispekerjaan");
+      })
+      .catch((error) => {
+        setLoading(false);
+      });
   };
   return (
     <MasterLayout>
@@ -44,7 +45,7 @@ function EditJenisPekerjaan() {
         <ol className="breadcrumb mb-4 mt-4"></ol>
         <div className="row">
           <form onSubmit={handleSubmit}>
-          <div className="form-group mb-3">
+            <div className="form-group mb-3">
               <label>Jenis Pekerjaan</label>
               <input
                 type="text"
@@ -67,7 +68,7 @@ function EditJenisPekerjaan() {
 
             <br />
             <button type="submit" className="btn btn-primary">
-              Submit
+              {loading ? "Loading .." : "Submit"}
             </button>
           </form>
         </div>

@@ -95,13 +95,11 @@ const MasterLayout = (props) => {
 
           <footer className="main-footer">
             <div className="float-right d-none d-sm-block">
-              <b>Version</b> 1.0.0
+              <b>Version</b> 1.0.0 
             </div>
             <strong>
               Copyright &copy; 2023
-              <a href="#">AdminLTE.io</a>.
             </strong>
-            All rights reserved.
           </footer>
 
           {/* Control Sidebar */}

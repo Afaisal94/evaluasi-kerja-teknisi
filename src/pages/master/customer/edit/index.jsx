@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { MasterLayout } from "../../../../components";
 import { useNavigate, useParams } from "react-router-dom";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getCustomerById, updateCustomer } from "../../../../hooks/useCustomer";
 
 function EditCustomer() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const [nama, setNama] = useState("");
   const [email, setEmail] = useState("");
   const [telepon, setTelepon] = useState("");
   const [alamat, setAlamat] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const { data: customer } = useQuery({
     queryKey: ["customer", id],
@@ -27,19 +27,17 @@ function EditCustomer() {
     }
   }, []);
 
-  const { mutate } = useMutation({
-    mutationFn: async () => {
-      await updateCustomer({ id, nama, email, telepon, alamat });
-    },
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["customer"] });
-    },
-  });
-
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await mutate({ id, nama, email, telepon, alamat });
-    navigate("/list-customer");
+    setLoading(true);
+    updateCustomer({ id, nama, email, telepon, alamat })
+      .then((res) => {
+        setLoading(false);
+        navigate("/list-customer");
+      })
+      .catch((error) => {
+        setLoading(false);
+      });
   };
   return (
     <MasterLayout>
@@ -92,7 +90,7 @@ function EditCustomer() {
 
             <br />
             <button type="submit" className="btn btn-primary">
-              Submit
+              {loading ? "Loading .." : "Submit"}
             </button>
           </form>
         </div>

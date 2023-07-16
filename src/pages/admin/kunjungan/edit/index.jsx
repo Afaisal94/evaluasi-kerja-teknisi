@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { AdminLayout } from "../../../../components";
 import { useNavigate, useParams } from "react-router-dom";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import {
   getKunjunganById,
   updateKunjungan,
@@ -13,7 +13,6 @@ function EditKunjunganTeknisi() {
   const { id } = useParams();
   const userId = parseInt(localStorage.getItem("userId"));
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const [customerId, setCustomerId] = useState(0);
   const teknisiId = userId;
   const [jenisPekerjaanId, setJenisPekerjaanId] = useState(0);
@@ -21,6 +20,7 @@ function EditKunjunganTeknisi() {
   const [keterangan, setKeterangan] = useState("");
   const [customer, setCustomer] = useState([]);
   const [jenisPekerjaan, setJenisPekerjaan] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const { data: kunjungan } = useQuery({
     queryKey: ["kunjungan", id],
@@ -48,7 +48,7 @@ function EditKunjunganTeknisi() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    setLoading(true);
     updateKunjungan({
       id,
       customerId,
@@ -56,10 +56,15 @@ function EditKunjunganTeknisi() {
       jenisPekerjaanId,
       counter,
       keterangan,
-    }).then((res) => {
-      console.log(res);
-    });
-    navigate("/list-kunjungan-teknisi");
+    })
+      .then((res) => {
+        // console.log(res);
+        setLoading(false);
+        navigate("/list-kunjungan-teknisi");
+      })
+      .catch((error) => {
+        setLoading(false);
+      });
   };
   return (
     <AdminLayout>
@@ -123,7 +128,7 @@ function EditKunjunganTeknisi() {
 
             <br />
             <button type="submit" className="btn btn-primary">
-              Submit
+              {loading ? "Loading .." : "Submit"}
             </button>
           </form>
         </div>

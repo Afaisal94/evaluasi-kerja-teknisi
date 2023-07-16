@@ -1,28 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { MasterLayout } from "../../../../components";
 import { useNavigate } from "react-router-dom";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createJenisPekerjaan } from "../../../../hooks/useJenisPekerjaan";
 
 function AddJenisPekerjaan() {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const [jenisPekerjaan, setJenisPekerjaan] = useState("");
   const [points, setPoints] = useState("");
-
-  const { mutate } = useMutation({
-    mutationFn: async () => {
-      await createJenisPekerjaan({ jenisPekerjaan, points });
-    },
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["jenisPekerjaan"] });
-    },
-  });
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await mutate({ jenisPekerjaan, points });
-    navigate("/list-jenispekerjaan");
+    setLoading(true);
+    createJenisPekerjaan({ jenisPekerjaan, points })
+      .then((res) => {
+        setLoading(false);
+        navigate("/list-jenispekerjaan");
+      })
+      .catch((error) => {
+        setLoading(false);
+      });
   };
   return (
     <MasterLayout>
@@ -54,7 +51,7 @@ function AddJenisPekerjaan() {
 
             <br />
             <button type="submit" className="btn btn-primary">
-              Submit
+              {loading ? "Loading .." : "Submit"}
             </button>
           </form>
         </div>

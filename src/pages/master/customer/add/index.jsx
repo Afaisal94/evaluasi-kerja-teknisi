@@ -1,30 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { MasterLayout } from "../../../../components";
 import { useNavigate } from "react-router-dom";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createCustomer } from "../../../../hooks/useCustomer";
 
 function AddCustomer() {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const [nama, setNama] = useState("");
   const [email, setEmail] = useState("");
   const [telepon, setTelepon] = useState("");
   const [alamat, setAlamat] = useState("");
-
-  const { mutate } = useMutation({
-    mutationFn: async () => {
-      await createCustomer({ nama, email, telepon, alamat });
-    },
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["customer"] });
-    },
-  });
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await mutate({ nama, email, telepon, alamat });
-    navigate("/list-customer");
+    setLoading(true);
+    createCustomer({ nama, email, telepon, alamat })
+      .then((res) => {
+        setLoading(false);
+        navigate("/list-customer");
+      })
+      .catch((error) => {
+        setLoading(false);
+      });
   };
   return (
     <MasterLayout>
@@ -77,7 +74,7 @@ function AddCustomer() {
 
             <br />
             <button type="submit" className="btn btn-primary">
-              Submit
+              {loading ? "Loading .." : "Submit"}
             </button>
           </form>
         </div>

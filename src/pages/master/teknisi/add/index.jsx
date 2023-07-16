@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { MasterLayout } from "../../../../components";
 import { useNavigate } from "react-router-dom";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { createTeknisi } from "../../../../hooks/useTeknisi";
 
 function AddTeknisi() {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const [nama, setNama] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,6 +12,7 @@ function AddTeknisi() {
   const [alamat, setAlamat] = useState("");
   const [foto, setFoto] = useState("");
   const [preview, setPreview] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const loadImage = (e) => {
     const image = e.target.files[0];
@@ -21,20 +20,17 @@ function AddTeknisi() {
     setPreview(URL.createObjectURL(image));
   };
 
-  const { mutate } = useMutation({
-    mutationFn: async () => {
-      await createTeknisi({ nama, email, password, telepon, alamat, foto });
-    },
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["teknisi"] });
-    },
-  });
-
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // console.log({ nama, email, password, telepon, alamat, foto })
-    await mutate({ nama, email, password, telepon, alamat, foto });
-    navigate("/list-teknisi");
+    setLoading(true);
+    createTeknisi({ nama, email, password, telepon, alamat, foto })
+      .then((res) => {
+        setLoading(false);
+        navigate("/list-teknisi");
+      })
+      .catch((error) => {
+        setLoading(false);
+      });
   };
   return (
     <MasterLayout>
@@ -104,14 +100,18 @@ function AddTeknisi() {
             </div>
             {preview ? (
               <figure>
-                <img src={preview} className="img-thumbnail" style={{width: '100px'}} />
+                <img
+                  src={preview}
+                  className="img-thumbnail"
+                  style={{ width: "100px" }}
+                />
               </figure>
             ) : (
               ""
             )}
             <br />
-            <button type="submit" className="btn btn-primary">
-              Submit
+            <button type="submit" className="btn btn-primary mb-3">
+              {loading ? 'Loading ..' : 'Submit'}
             </button>
           </form>
         </div>
